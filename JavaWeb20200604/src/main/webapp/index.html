@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ch">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/jquery-1.11.0.js" type="text/javascript"></script>
+
+</head>
+
+<script>
+    TOMCAT_POST = 80
+
+    var login = function () {
+        if ($("#id").val()==undefined||$("#name").val()==undefined){
+            alert("数据不完整")
+            return;
+        }
+        $.post("http://localhost:"+TOMCAT_POST+"/JavaWeb/student/login", {
+            "id": $("#id").val(),
+            "name": $("#name").val()
+        }, function (data) {
+            $("#msg").html("<span id=\"msg\">" + data.msg + "</span>")
+        })
+    }
+
+    var select = function () {
+        $.post("http://localhost:"+TOMCAT_POST+"/JavaWeb/student/select", { "name": $("#select").val() }, function (data) {
+            // 展示请求状态
+            $("#msg").html("<span id=\"msg\">" + data.msg + "</span>");
+
+            var s = data.student;
+
+            for (var i = 0; i < s.length; i++)
+                $("#tableHead").append("<tr>" +
+                    "<td>" + s[i].id + "</td>" +
+                    "<td>" + s[i].name + "</td>" +
+                    "<td>" + s[i].teacher_name + "</td>" +
+                    "<td>" + s[i].curriculum_name + "</td>" +
+                    "<td>" + s[i].credit + "</td>" +
+                    "<td>" + s[i].schooltime + "</td>" +
+                    "<td>" + s[i].qutting_time + "</td>" +
+                    "<td>" + s[i].usal_performmance + "</td>" +
+                    "<td>" + s[i].final_grade + "</td>" +
+                    "<td>" + s[i].final_resutl + "</td>" +
+                    "</tr>")
+        })
+    };
+
+    $(function () {
+        $("#login").click(login);
+        $("#submit").click(select);
+    })
+</script>
+
+<body>
+    <div>
+        <input type="text" name="id" id="id" placeholder="ID">
+        <br>
+        <input type="text" name="name" id="name" placeholder="name">
+        <br>
+        <input type="button" onclick="javascript:login()" id="login" value="登录">
+    </div>
+    <br>
+    <br>
+    <span id="msg"></span>
+    <br>
+    <br>
+    <div>
+        <input type="text" id="select">
+        <input type="button" onclick="javascript:select()" id="submit" value="查询">
+        <br>
+        <table id="tableHead">
+            <tr>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>任课老师</th>
+                <th>课程名称</th>
+                <th>学分</th>
+                <th>上课时间</th>
+                <th>下课时间</th>
+                <th>平时成绩</th>
+                <th>期末成绩</th>
+                <th>最终成绩</th>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
